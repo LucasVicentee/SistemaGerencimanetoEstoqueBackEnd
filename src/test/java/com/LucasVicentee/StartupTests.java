@@ -1,10 +1,10 @@
-package com.LucasVicentee.SistemaEstoqueBackEnd;
+package com.LucasVicentee;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SistemaEstoqueBackEndApplicationTests {
+class StartupTests {
 
 	@Test
 	void contextLoads() {
