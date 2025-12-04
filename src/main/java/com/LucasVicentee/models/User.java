@@ -3,10 +3,12 @@ package com.LucasVicentee.models;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
-@Table(name = "user")
+@Table(name = "tb_user")
 public class User implements Serializable {
 
     @Id
@@ -19,14 +21,39 @@ public class User implements Serializable {
     @Column(name = "last_name", nullable = false, length = 100)
     private String lastName;
 
-    @Column(name = "nick_name", nullable = false, length = 100)
+    @Column(name = "nick_name", nullable = false, length = 100, unique = true)
     private String nickName;
 
-    @Column(name = "email", nullable = false, length = 80)
+    @Column(name = "birth_date", nullable = false)
+    private LocalDateTime birthDate;
+
+    @Column(name = "email", nullable = false, length = 80, unique = true)
     private String email;
 
-    @Column(name = "password", nullable = false, length = 100)
+    @Column(name = "password", nullable = false, length = 200)
     private String password;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    public User() {
+
+    }
+
+    public User(Long id, String firstName, String lastName, String nickName, LocalDateTime birthDate, String email, String password) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.nickName = nickName;
+        this.birthDate = birthDate;
+        this.email = email;
+        this.password = password;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+    }
 
     public Long getId() {
         return id;
@@ -60,6 +87,14 @@ public class User implements Serializable {
         this.nickName = nickName;
     }
 
+    public LocalDateTime getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(LocalDateTime birthDate) {
+        this.birthDate = birthDate;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -80,11 +115,11 @@ public class User implements Serializable {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(getId(), user.getId()) && Objects.equals(getFirstName(), user.getFirstName()) && Objects.equals(getLastName(), user.getLastName()) && Objects.equals(getNickName(), user.getNickName()) && Objects.equals(getEmail(), user.getEmail()) && Objects.equals(getPassword(), user.getPassword());
+        return Objects.equals(getId(), user.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getFirstName(), getLastName(), getNickName(), getEmail(), getPassword());
+        return Objects.hashCode(getId());
     }
 }
